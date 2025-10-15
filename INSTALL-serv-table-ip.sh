@@ -1,5 +1,5 @@
 #!/bin/bash
-# Instalador/Actualizador de serv-table-ip
+# Instalador de ServTableIP
 # Autor: XaeK
 # Fecha: 2025
 set -euo pipefail
