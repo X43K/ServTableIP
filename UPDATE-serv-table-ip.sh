@@ -1,5 +1,5 @@
 #!/bin/bash
-# Actualizador inteligente de serv-table-ip
+# Actualizador inteligente de ServTableIP
 # Solo sobrescribe archivos que cambien, preserva credservpas.xk y logs
 # Autor: XaeK
 # Fecha: 2025
