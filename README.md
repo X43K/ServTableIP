@@ -20,3 +20,6 @@ Dale permiso de ejecucion y ejecutar UPDATE-serv-table-ip.sh:<br>
 
 <p>IDIOMAS:<br>
 Español</p>
+
+
+<img src="https://github.com/X43K/ServTableIP/blob/e528e7f4c89b6144d72e9558aaa671c59bac6e1e/IMG_0168.png">
