@@ -4,9 +4,9 @@
 # Fecha: 2025
 set -euo pipefail
 
-APP_NAME="serv-table-ip"
+APP_NAME="ServTableIP"
 USER_NAME="$SUDO_USER"
-BASE_URL="http://xaek.ddns.net:8080/APPS"
+BASE_URL="https://github.com/X43K"
 REMOTE_DIR="${BASE_URL}/${APP_NAME}/"
 INSTALL_DIR="/home/$USER_NAME/${APP_NAME}"
 SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
