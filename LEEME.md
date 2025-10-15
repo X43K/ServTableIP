@@ -3,7 +3,7 @@ INSTALACION TERMINADA!!!
 
 POR SEGURIDAD SE RECOMIENDA:
 
-Editar el archivo "credservpas.xk" con nano, vin, etc..
+Editar el archivo "/home/$USER_NAME/ServTableIP/credservpas.xk" con nano, vin, etc..
 el usuario (primera fila)
 y la contraseña (segunda fila)
 

@@ -4,7 +4,7 @@ ACTUALIZACION TERMINADA!!!
 si es la primera vez que ves el siguiente mensaje...
 POR SEGURIDAD SE RECOMIENDA:
 
-Editar el archivo "credservpas.xk" con nano, vin, etc..
+Editar el archivo "/home/$USER_NAME/ServTableIP/credservpas.xk" con nano, vin, etc..
 el usuario (primera fila)
 y la contraseña (segunda fila)
 
