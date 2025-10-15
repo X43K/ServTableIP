@@ -17,7 +17,7 @@ rm -r INSTALL-serv-table-ip.sh
 
 **SE RECOMIENDA CAMBIAR CREDENCIALES TAL COMO SE INDICA TRAS FINALIZAR LA INSTALACION**</p>
 
-<p>ACTUALIZACION:
+<p>ACTUALIZACION:<br>
 Dentro del directorio /home/$USER/ServTableIP/ ejecutar UPDATE-serv-table-ip.sh:<br>
 <pre>
 cd ServTableIP/
