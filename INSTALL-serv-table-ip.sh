@@ -116,9 +116,9 @@ sudo find "$INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 # Asegurar que el sistema tiene soporte UTF-8
 echo "[3/6] Verificando locales UTF-8..."
-if ! locale -a | grep -qi "en_US.utf8"; then
-  sudo locale-gen en_US.UTF-8
-  sudo update-locale LANG=en_US.UTF-8
+if ! locale -a | grep -qi "es_ES.utf8"; then
+  sudo locale-gen es_ES.UTF-8
+  sudo update-locale LANG=es_ES.UTF-8
 fi
 
 # Instalar Scapy desde apt
