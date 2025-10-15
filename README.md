@@ -22,4 +22,4 @@ Dale permiso de ejecucion y ejecutar UPDATE-serv-table-ip.sh:<br>
 Español</p>
 
 
-<img src="https://github.com/X43K/ServTableIP/blob/e528e7f4c89b6144d72e9558aaa671c59bac6e1e/IMG_0168.png">
+<img src="https://github.com/X43K/ServTableIP/blob/a9ac8a79b65d2dea99f4dadd71271b359d24fd6f/IMG_0168.png">
