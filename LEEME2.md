@@ -21,9 +21,9 @@ o fallar el archivo en cuestion.
 
 
 RECUERDA reiniciar el servicio una vez realizados cambios en
-el archivo "serv-table-ip-*.py con el comando:
+el archivo "ServTableIP-*.py con el comando:
 
-sudo systemctl restart serv-table-ip.service
+sudo systemctl restart ServTableIP.service
 
 PARA ACCEDER AL SERVICIO ACCEDE A:
 http://localhost:5000  (para remoto sustituir "localhost" por la IP)
