@@ -1,5 +1,5 @@
 # ServTableIP<br>
-<img src="https://github.com/X43K/ServTableIP/blob/e528e7f4c89b6144d72e9558aaa671c59bac6e1e/IMG_1621.webp">
+<img src="https://github.com/X43K/ServTableIP/blob/33a296ba55a4da98acbeb521691716eaa6f1b8be/Logo.webp">
 Crea un servidor con una tabla de los dispositivos conectados a tu red
 
 **PROBADO EN RASPBERRY OS y KALI**
@@ -29,4 +29,4 @@ sudo ./UPDATE-serv-table-ip.sh
 Español</p>
 
 
-<img src="https://github.com/X43K/ServTableIP/blob/c2dd51e9d333d943e2c4eb86d20125f2ea2cf423/IMG_0168.webp">
+<img src="https://github.com/X43K/ServTableIP/blob/33a296ba55a4da98acbeb521691716eaa6f1b8be/Ejemplo.webp">
