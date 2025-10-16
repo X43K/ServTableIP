@@ -3,26 +3,21 @@ INSTALACION TERMINADA!!!
 
 POR SEGURIDAD SE RECOMIENDA:
 
-Editar el archivo "/home/$USER_NAME/ServTableIP/credservpas.xk" con nano, vin, etc..
-el usuario (primera fila)
-y la contraseña (segunda fila)
+Cambiar las credenciales tras el primer inicio:
+Abre en un navegador http://localhost:5000
+inicia sesion con:
+Usuario root
+Contraseña 1234
+y accede a la opcion "Cambiar usuario/contraseña"
 
-Por defecto:
-root
-1234
 
-Igualmente se mantiene un acceso de respaldo en caso de error
-o falta del archivo "credservpas.xk" con:
+Igualmente se mantiene un acceso de respaldo en caso de
+corrupcion o borrado del archivo de claves con:
 usuario "admin"
 contraseña "admin"
 *estas credenciales solo se activan en caso de faltar
 o fallar el archivo en cuestion.
 
-
-RECUERDA reiniciar el servicio una vez realizados cambios en
-el archivo "ServTableIP-*.py con el comando:
-
-sudo systemctl restart ServTableIP.service
 
 PARA ACCEDER AL SERVICIO ACCEDE A:
 http://localhost:5000  (para remoto sustituir "localhost" por la IP)

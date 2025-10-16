@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Limpiar temporales antiguos
+rm -r tmp*
+
 # Obtener el nombre del usuario actual
 user=$(whoami)
 
