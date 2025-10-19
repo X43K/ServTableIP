@@ -1186,6 +1186,7 @@ def cambiar_credenciales():
     <html lang="es"><head><meta charset="utf-8"><title>Cambiar credenciales</title></head>
     <body style="font-family:Arial;margin:20px">
       <h2>🔑 Cambiar usuario/contraseña</h2>
+      <h2>SE DIFERENCIAN MAYUSCULAS/minusculas TANTO EN EL USUARIO COMO EN LA CONTRASEÑA</h2>
       <form method="post" onsubmit="return confirm('¿Seguro que quieres guardar y reiniciar el servicio?');">
         <label>Usuario actual:<br><input type="text" name="user_actual" required></label><br>
         <label>Contraseña actual:<br><input type="password" name="pass_actual" required></label><hr>
