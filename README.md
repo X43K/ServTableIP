@@ -20,8 +20,7 @@ rm -r INSTALL-serv-table-ip.sh
 <p>ACTUALIZACION:<br>
 Dentro del directorio /home/$USER/ServTableIP/ ejecutar UPDATE-serv-table-ip.sh:<br>
 <pre>
-cd ServTableIP/
-sudo ./UPDATE-serv-table-ip.sh
+sudo ./ServTableIP/UPDATE-serv-table-ip.sh
 </pre>
 *Automaticamente comprueba y descarga los nuevos archivos y/o modificaciones, respetando logs y credenciales. Al terminar, reiniciara el servicio.</p>
 
