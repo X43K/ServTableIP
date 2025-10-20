@@ -24,6 +24,7 @@ cd ServTableIP/
 sudo ./UPDATE-serv-table-ip.sh
 </pre>
 *Automaticamente comprueba y descarga los nuevos archivos, eliminando versiones antiguas y/o modificaciones, respetando logs y credenciales. Al terminar, reiniciara el servicio.</p>
+
 **SI VIENE DE UNA VERSION ANTERIOR A 9.0 ACCEDA A localhost:5000 Y SIGA LOS PASOS PARA CREAR LAS NUEVAS CREDENCIALES**</p>
 
 <p>IDIOMAS:<br>
