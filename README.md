@@ -1,5 +1,5 @@
 # ServTableIP<br>
-<img src="https://github.com/X43K/ServTableIP/blob/33a296ba55a4da98acbeb521691716eaa6f1b8be/Logo.webp">
+<img src="https://github.com/X43K/ServTableIP/blob/e528e7f4c89b6144d72e9558aaa671c59bac6e1e/IMG_1621.webp">
 Crea un servidor con una tabla de los dispositivos conectados a tu red
 
 **PROBADO EN RASPBERRY OS y KALI**
@@ -15,21 +15,20 @@ rm -r INSTALL-serv-table-ip.sh
 </pre>
 *Automaticamente descargara el resto de archivos; creara, activara y ejecutara el servicio para que inicie de forma automatica.<br>
 
-**SE RECOMIENDA CAMBIAR CREDENCIALES TAL COMO SE INDICA TRAS FINALIZAR LA INSTALACION**</p>
+**TRAS LA INSTALACION ACCEDA A localhost:5000 Y SIGA LOS PASOS PARA CREAR LAS NUEVAS CREDENCIALES**</p>
 
 <p>ACTUALIZACION:<br>
 Dentro del directorio /home/$USER/ServTableIP/ ejecutar UPDATE-serv-table-ip.sh:<br>
 <pre>
-sudo ./ServTableIP/UPDATE-serv-table-ip.sh
+cd ServTableIP/
+sudo ./UPDATE-serv-table-ip.sh
 </pre>
-*Automaticamente comprueba y descarga los nuevos archivos y/o modificaciones, respetando logs y credenciales. Al terminar, reiniciara el servicio.</p>
+*Automaticamente comprueba y descarga los nuevos archivos, eliminando versiones antiguas y/o modificaciones, respetando logs y credenciales. Al terminar, reiniciara el servicio.</p>
+
+**SI VIENE DE UNA VERSION ANTERIOR A 9.0 ACCEDA A localhost:5000 Y SIGA LOS PASOS PARA CREAR LAS NUEVAS CREDENCIALES**</p>
 
 <p>IDIOMAS:<br>
 Español</p>
 
 
-<img src="https://github.com/X43K/ServTableIP/blob/33a296ba55a4da98acbeb521691716eaa6f1b8be/Ejemplo.webp">
-
-
-**Ahora es posible personalizar desde la interfaz web el "Host", "Tipo", "Icono"y "Color" de manera sencilla e intuitiva.
-<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/Ejemplo2.jpg">
+<img src="https://github.com/X43K/ServTableIP/blob/c2dd51e9d333d943e2c4eb86d20125f2ea2cf423/IMG_0168.webp">
