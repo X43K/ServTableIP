@@ -3,6 +3,7 @@
 #  Actualizador inteligente de ServTableIP (GitHub)
 #  - Elimina versiones antiguas ServTableIP-*.py
 #  - Borra credservpas.xk si la versión < 9.0
+#  - Solo sobrescribe archivos modificados (hash distinto)
 #  - Hace ejecutables todos los *.sh nuevos (con sudo)
 #  - Aplica permisos 777 a todo el directorio ServTableIP
 # =============================================================
@@ -45,7 +46,7 @@ echo "[1/6] Comprobando si hay una versión más reciente..."
 remote_commit="$(curl -s "$COMMITS_API" | grep -m1 '"sha":' | cut -d '"' -f4 || echo "desconocido")"
 
 if [ -z "$remote_commit" ] || [ "$remote_commit" = "desconocido" ]; then
-    echo "⚠️  No se pudo obtener el hash del último commit remoto (sin conexión o API limitada)."
+    echo "⚠️  No se pudo obtener el hash del último commit remoto."
 else
     if [ -f "$COMMIT_FILE" ]; then
         local_commit="$(cat "$COMMIT_FILE" 2>/dev/null || echo "")"
@@ -102,32 +103,39 @@ else
     echo "   credservpas.xk preservado (versión >= 9.0)"
 fi
 
-# --- [5/6] Copiar archivos nuevos ---
-echo "[5/6] Copiando archivos nuevos..."
+# --- [5/6] Copiar solo archivos modificados ---
+echo "[5/6] Sincronizando archivos modificados..."
 shopt -s globstar nullglob
 for f in "$SRC_DIR"/**/*; do
     [ -f "$f" ] || continue
     rel_path="${f#$SRC_DIR/}"
     dest="$INSTALL_DIR/$rel_path"
 
-    if [[ "$rel_path" == logs/* ]]; then
+    # No tocar logs ni credenciales si ya existen
+    if [[ "$rel_path" == "logs/"* ]]; then
+        continue
+    fi
+    if [[ "$rel_path" == "credservpas.xk" && -f "$dest" ]]; then
+        echo " -> Preservando credservpas.xk"
         continue
     fi
 
     mkdir -p "$(dirname "$dest")"
-    cp -a "$f" "$dest"
-    echo " -> Copiado: $rel_path"
+
+    # Solo sobrescribir si cambia el hash
+    if [ ! -f "$dest" ] || ! cmp -s <(sha256sum "$f" | awk '{print $1}') <(sha256sum "$dest" | awk '{print $1}'); then
+        cp -a "$f" "$dest"
+        echo " -> Actualizado: $rel_path"
+    fi
 done
 
-# --- NUEVO BLOQUE: hacer ejecutables todos los *.sh ---
-echo "[5.1] Ajustando permisos de ejecución en scripts..."
+# --- [5.1] Hacer ejecutables todos los scripts .sh ---
+echo "[5.1] Ajustando permisos de ejecución..."
 sudo find "$INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
-echo "   ✅ Todos los scripts *.sh marcados como ejecutables."
 
-# --- NUEVO BLOQUE: aplicar permisos 777 a todo ---
+# --- [5.2] Permisos 777 a todo ---
 echo "[5.2] Aplicando permisos 777 a todo el directorio..."
 sudo chmod -R 777 "$INSTALL_DIR"
-echo "   ✅ Permisos 777 aplicados a todos los archivos y carpetas."
 
 # --- [6/6] Registrar commit y reiniciar servicio ---
 if [ -n "$remote_commit" ] && [ "$remote_commit" != "desconocido" ]; then
@@ -141,11 +149,10 @@ sudo systemctl restart "$APP_NAME"
 
 echo
 echo "✅ Actualización completada correctamente."
+echo "   - Solo archivos modificados fueron actualizados"
 echo "   - Versiones antiguas eliminadas"
-echo "   - credservpas.xk gestionado según versión local"
-echo "   - *.sh marcados como ejecutables"
-echo "   - Permisos 777 aplicados a todo el directorio"
-echo "   - Commit actualizado: ${remote_commit:0:7}"
+echo "   - credservpas.xk gestionado según versión"
+echo "   - *.sh ejecutables + permisos 777 aplicados"
 echo
 echo "Puedes revisar logs con:"
 echo "   sudo journalctl -u $APP_NAME -f"
