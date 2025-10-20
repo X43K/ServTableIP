@@ -1,6 +1,6 @@
 # ServTableIP<br>
-<img src="https://github.com/X43K/ServTableIP/blob/e528e7f4c89b6144d72e9558aaa671c59bac6e1e/IMG_1621.webp">
-Crea un servidor con una tabla de los dispositivos conectados a tu red
+<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/static/Logo.webp">
+Crea un servidor con una lista de los dispositivos conectados a tu red
 
 **PROBADO EN RASPBERRY OS y KALI**
 
@@ -29,8 +29,8 @@ sudo ./ServTableIP/UPDATE-serv-table-ip.sh
 <p>IDIOMAS:<br>
 Español</p>
 
-<img src="https://github.com/X43K/ServTableIP/blob/c2dd51e9d333d943e2c4eb86d20125f2ea2cf423/IMG_0168.webp">
+<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/static/Ejemplo.webp">
 
 <p>**Ahora es posible personalizar desde la interfaz web el "Host", "Tipo", "Icono"y "Color" de manera sencilla e intuitiva.</p>
 
-<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/Ejemplo2.webp">
+<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/static/Ejemplo2.webp">
