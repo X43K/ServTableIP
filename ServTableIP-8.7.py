@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 ServTableIP.py - Monitor de red con UI integrada y editor de reglas/MAC.
-Sustituye a tu script anterior. Genera la misma UI principal que tenías y añade:
  - Editor de reglas (tipos.json)
  - Editor de MACs exactas (macs.json)
  - Desplegable de MACs conocidas con su IP actual/última vista
  - Lista fija de emojis (estilo Apple) para elegir icono
  - Prioridad IP .1 (router) y prioridad MAC exacta
-Ejecutar como root para escaneos completos (Scapy, arping).
+ - Escaneos completos (Scapy, arping).
 """
 
 import os
