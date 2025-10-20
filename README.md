@@ -32,3 +32,16 @@ Español</p>
 
 
 <img src="https://github.com/X43K/ServTableIP/blob/c2dd51e9d333d943e2c4eb86d20125f2ea2cf423/IMG_0168.webp">
+
+
+
+
+
+
+
+
+
+**Ahora es posible personalizar desde la interfaz web el "Host", "Tipo", "Icono"y "Color" de manera sencilla e intuitiva.
+
+
+<img src="https://raw.githubusercontent.com/X43K/ServTableIP/refs/heads/main/Ejemplo2.jpg">
