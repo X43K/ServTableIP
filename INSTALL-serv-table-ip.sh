@@ -128,7 +128,7 @@ echo "✅ Instalación/actualización completada correctamente."
 echo "Puedes revisar logs con:"
 echo "   sudo journalctl -u ${APP_NAME}.service -f"
 
-if [ -f "${INSTALL_DIR}/LEEME.md" ]; then
+if [ -f "${INSTALL_DIR}/static/LEEME.md" ]; then
   echo
-  cat "${INSTALL_DIR}/LEEME.md"
+  cat "${INSTALL_DIR}/static/LEEME.md"
 fi

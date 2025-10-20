@@ -156,3 +156,8 @@ echo "   - *.sh ejecutables + permisos 777 aplicados"
 echo
 echo "Puedes revisar logs con:"
 echo "   sudo journalctl -u $APP_NAME -f"
+
+if [ -f "${INSTALL_DIR}/static/LEEME2.md" ]; then
+  echo
+  cat "${INSTALL_DIR}/static/LEEME2.md"
+fi
