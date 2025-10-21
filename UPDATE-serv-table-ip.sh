@@ -5,6 +5,7 @@
 #  - Borra credservpas.xk si la versión < 9.0
 #  - Solo sobrescribe archivos modificados (hash distinto)
 #  - Hace ejecutables todos los *.sh nuevos (con sudo)
+#  - Actualiza base de datos oficial oui
 #  - Aplica permisos 777 a todo el directorio ServTableIP
 # =============================================================
 #  Autor: XaeK
@@ -31,8 +32,8 @@ echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0.0] Comprobar y actualizar oui.txt desde IEEE ---
-echo "[0.0] Comprobando si el listado OUI oficial ha cambiado..."
+# --- [0] Comprobar y actualizar oui.txt desde IEEE ---
+echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
 OUI_META="${INSTALL_DIR}/oui_last_modified.txt"
