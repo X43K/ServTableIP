@@ -133,6 +133,32 @@ done
 echo "[5.1] Ajustando permisos de ejecución..."
 sudo find "$INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
+# --- [5.15] Comprobar y actualizar oui.txt desde IEEE ---
+echo "[5.15] Comprobando si el listado OUI oficial ha cambiado..."
+OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
+OUI_FILE="${INSTALL_DIR}/oui.txt"
+OUI_META="${INSTALL_DIR}/oui_last_modified.txt"
+
+remote_date="$(curl -sI "$OUI_URL" | grep -i '^Last-Modified:' | sed 's/Last-Modified: //I' | tr -d '\r')"
+local_date="$(cat "$OUI_META" 2>/dev/null || echo "")"
+
+if [ -n "$remote_date" ]; then
+    if [ "$remote_date" != "$local_date" ]; then
+        echo "📡 Nueva versión detectada del listado OUI. Descargando..."
+        if curl -s -o "${OUI_FILE}.tmp" "$OUI_URL"; then
+            mv "${OUI_FILE}.tmp" "$OUI_FILE"
+            echo "$remote_date" > "$OUI_META"
+            echo "✅ Archivo oui.txt actualizado correctamente."
+        else
+            echo "⚠️  Error al descargar la nueva versión del oui.txt."
+        fi
+    else
+        echo "✅ El archivo oui.txt ya está actualizado."
+    fi
+else
+    echo "⚠️  No se pudo comprobar la fecha remota de oui.txt."
+fi
+
 # --- [5.2] Permisos 777 a todo ---
 echo "[5.2] Aplicando permisos 777 a todo el directorio..."
 sudo chmod -R 777 "$INSTALL_DIR"
