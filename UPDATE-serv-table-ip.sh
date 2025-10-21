@@ -1,6 +1,7 @@
 #!/bin/bash
 # =============================================================
 #  Actualizador inteligente de ServTableIP (GitHub)
+#  - Actualiza base de datos oficial oui
 #  - Elimina versiones antiguas ServTableIP-*.py
 #  - Borra credservpas.xk si la versión < 9.0
 #  - Solo sobrescribe archivos modificados (hash distinto)
@@ -28,14 +29,16 @@ SCRIPT_FILE="${INSTALL_DIR}/${SCRIPT_NAME}"
 TMP_UPDATE_DIR="$(mktemp -d)"
 COMMIT_FILE="${INSTALL_DIR}/.last_commit"
 
+NEEDS_RESTART=0  # ⚡ Variable para determinar si se debe reiniciar el servicio
+
 echo "=============================================="
 echo " Actualizador inteligente de $APP_NAME"
 echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0.0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
-echo "[0.0] Comprobando si el listado OUI oficial ha cambiado..."
+# --- [0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
+echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
 TMP_OUI="${INSTALL_DIR}/oui.txt.tmp"
@@ -48,6 +51,7 @@ if curl -s -o "$TMP_OUI" "$OUI_URL"; then
         mv "$TMP_OUI" "$OUI_FILE"
         chmod 777 "$OUI_FILE"
         echo "📡 Nueva versión detectada del listado OUI. Archivo actualizado correctamente y permisos aplicados."
+        NEEDS_RESTART=1
     else
         rm -f "$TMP_OUI"
         echo "✅ El archivo oui.txt ya está actualizado."
@@ -78,25 +82,14 @@ elif [ "$remote_commit" != "$local_commit" ]; then
     # --- [3] Copiar archivos nuevos solo si cambian (hash distinto) ---
     echo "[3] Aplicando actualización de archivos..."
     rsync -rc --ignore-existing "$UPDATE_SRC_DIR/" "$INSTALL_DIR/"
+    NEEDS_RESTART=1
 
     # --- [4] Aplicar permisos de ejecución a .sh y 777 a todo el directorio ---
     echo "[4] Aplicando permisos..."
     find "$INSTALL_DIR" -maxdepth 1 -name '*.sh' -type f -exec chmod +x {} \;
     chmod -R 777 "$INSTALL_DIR"
 
-    # --- [5] Reiniciar servicio systemd si está activo ---
-    if systemctl is-active --quiet "$APP_NAME"; then
-        sudo systemctl restart "$APP_NAME"
-        echo "🔄 Servicio $APP_NAME reiniciado correctamente."
-    fi
-
-    # --- [6] Mostrar LEEME2.md ---
-    if [ -f "$INSTALL_DIR/LEEME2.md" ]; then
-        echo "📖 Contenido de LEEME2.md:"
-        cat "$INSTALL_DIR/LEEME2.md"
-    fi
-
-    # --- [7] Comprobar si el propio script ha cambiado ---
+    # --- [5] Comprobar si el propio script ha cambiado ---
     if [ -f "$UPDATE_SRC_DIR/$SCRIPT_NAME" ]; then
         remote_script_hash="$(sha256sum "$UPDATE_SRC_DIR/$SCRIPT_NAME" | awk '{print $1}')"
         local_script_hash="$(sha256sum "$SCRIPT_FILE" 2>/dev/null | awk '{print $1}' || echo "")"
@@ -115,6 +108,20 @@ elif [ "$remote_commit" != "$local_commit" ]; then
     echo "✅ Actualización completada."
 else
     echo "✅ Ya tienes la última versión de la aplicación instalada."
+fi
+
+# --- [6] Reiniciar servicio si hubo actualizaciones ---
+if [ "$NEEDS_RESTART" -eq 1 ]; then
+    if systemctl is-active --quiet "$APP_NAME"; then
+        sudo systemctl restart "$APP_NAME"
+        echo "🔄 Servicio $APP_NAME reiniciado correctamente tras la actualización."
+    fi
+fi
+
+# --- [7] Mostrar LEEME2.md ---
+if [ -f "$INSTALL_DIR/LEEME2.md" ]; then
+    echo "📖 Contenido de LEEME2.md:"
+    cat "$INSTALL_DIR/LEEME2.md"
 fi
 
 # --- [8] Limpieza ---
