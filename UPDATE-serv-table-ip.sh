@@ -1,12 +1,12 @@
 #!/bin/bash
 # =============================================================
 #  Actualizador inteligente de ServTableIP (GitHub)
-#  - Actualiza base de datos oficial oui
 #  - Elimina versiones antiguas ServTableIP-*.py
 #  - Borra credservpas.xk si la versión < 9.0
 #  - Solo sobrescribe archivos modificados (hash distinto)
 #  - Hace ejecutables todos los *.sh nuevos (con sudo)
 #  - Aplica permisos 777 a todo el directorio ServTableIP
+#  - Reinicia servicio y muestra LEEME2.md
 #  - Auto-reinicio si UPDATE-serv-table-ip.sh cambia
 # =============================================================
 #  Autor: XaeK
@@ -34,8 +34,8 @@ echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
-echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
+# --- [0.0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
+echo "[0.0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
 TMP_OUI="${INSTALL_DIR}/oui.txt.tmp"
@@ -79,15 +79,24 @@ elif [ "$remote_commit" != "$local_commit" ]; then
     echo "[3] Aplicando actualización de archivos..."
     rsync -rc --ignore-existing "$UPDATE_SRC_DIR/" "$INSTALL_DIR/"
 
-    # --- [4] Hacer ejecutables los scripts .sh ---
-    echo "[4] Aplicando permisos de ejecución a scripts nuevos..."
+    # --- [4] Aplicar permisos de ejecución a .sh y 777 a todo el directorio ---
+    echo "[4] Aplicando permisos..."
     find "$INSTALL_DIR" -maxdepth 1 -name '*.sh' -type f -exec chmod +x {} \;
-
-    # --- [5] Aplicar permisos 777 a todo el directorio ---
-    echo "[5] Aplicando permisos 777 a todo el directorio..."
     chmod -R 777 "$INSTALL_DIR"
 
-    # --- [6] Comprobar si el propio script ha cambiado ---
+    # --- [5] Reiniciar servicio systemd si está activo ---
+    if systemctl is-active --quiet "$APP_NAME"; then
+        sudo systemctl restart "$APP_NAME"
+        echo "🔄 Servicio $APP_NAME reiniciado correctamente."
+    fi
+
+    # --- [6] Mostrar LEEME2.md ---
+    if [ -f "$INSTALL_DIR/LEEME2.md" ]; then
+        echo "📖 Contenido de LEEME2.md:"
+        cat "$INSTALL_DIR/LEEME2.md"
+    fi
+
+    # --- [7] Comprobar si el propio script ha cambiado ---
     if [ -f "$UPDATE_SRC_DIR/$SCRIPT_NAME" ]; then
         remote_script_hash="$(sha256sum "$UPDATE_SRC_DIR/$SCRIPT_NAME" | awk '{print $1}')"
         local_script_hash="$(sha256sum "$SCRIPT_FILE" 2>/dev/null | awk '{print $1}' || echo "")"
@@ -108,7 +117,7 @@ else
     echo "✅ Ya tienes la última versión de la aplicación instalada."
 fi
 
-# --- [7] Limpieza ---
+# --- [8] Limpieza ---
 rm -rf "$TMP_UPDATE_DIR"
 echo "=============================================="
 echo " Actualización finalizada."
