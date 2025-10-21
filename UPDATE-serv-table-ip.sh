@@ -129,3 +129,9 @@ rm -rf "$TMP_UPDATE_DIR"
 echo "=============================================="
 echo " Actualización finalizada."
 echo "=============================================="
+
+
+if [ -f "${INSTALL_DIR}/static/LEEME2.md" ]; then
+  echo
+  cat "${INSTALL_DIR}/static/LEEME2.md"
+fi
