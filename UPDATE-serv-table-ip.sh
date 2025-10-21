@@ -5,7 +5,6 @@
 #  - Borra credservpas.xk si la versión < 9.0
 #  - Solo sobrescribe archivos modificados (hash distinto)
 #  - Hace ejecutables todos los *.sh nuevos (con sudo)
-#  - Actualiza base de datos oficial oui
 #  - Aplica permisos 777 a todo el directorio ServTableIP
 # =============================================================
 #  Autor: XaeK
@@ -32,37 +31,30 @@ echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0] Comprobar y actualizar oui.txt desde IEEE ---
+# --- [0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
 echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
-OUI_META="${INSTALL_DIR}/oui_last_modified.txt"
 
-remote_date="$(curl -sI "$OUI_URL" | grep -i '^Last-Modified:' | sed 's/Last-Modified: //I' | tr -d '\r')"
-local_date="$(cat "$OUI_META" 2>/dev/null || echo "")"
+TMP_OUI="${INSTALL_DIR}/oui.txt.tmp"
+if curl -s -o "$TMP_OUI" "$OUI_URL"; then
+    remote_hash="$(sha256sum "$TMP_OUI" | awk '{print $1}')"
+    local_hash="$(sha256sum "$OUI_FILE" 2>/dev/null | awk '{print $1}' || echo "")"
 
-if [ -n "$remote_date" ]; then
-    if [ "$remote_date" != "$local_date" ]; then
-        echo "📡 Nueva versión detectada del listado OUI. Descargando..."
-        if curl -s -o "${OUI_FILE}.tmp" "$OUI_URL"; then
-            mv "${OUI_FILE}.tmp" "$OUI_FILE"
-            chmod 777 "$OUI_FILE"
-            echo "$remote_date" > "$OUI_META"
-            echo "✅ Archivo oui.txt actualizado correctamente y permisos aplicados."
-        else
-            echo "⚠️  Error al descargar la nueva versión del oui.txt."
-        fi
+    if [ "$remote_hash" != "$local_hash" ]; then
+        mv "$TMP_OUI" "$OUI_FILE"
+        chmod 777 "$OUI_FILE"
+        echo "📡 Nueva versión detectada del listado OUI. Archivo actualizado correctamente y permisos aplicados."
     else
+        rm -f "$TMP_OUI"
         echo "✅ El archivo oui.txt ya está actualizado."
     fi
 else
-    echo "⚠️  No se pudo comprobar la fecha remota de oui.txt."
+    echo "⚠️  Error al descargar el archivo oui.txt."
 fi
 
 # --- [1] Comprobar última versión del repositorio ---
 echo "[1] Comprobando última versión del repositorio..."
-
-# Obtención robusta del SHA del último commit
 remote_commit="$(curl -s "$COMMITS_API" | awk -F'"' '/"sha":/ {print $4; exit}')"
 local_commit="$(cat "$COMMIT_FILE" 2>/dev/null || echo "")"
 
