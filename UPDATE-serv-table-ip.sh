@@ -37,8 +37,8 @@ echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0.0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
-echo "[0.0] Comprobando si el listado OUI oficial ha cambiado..."
+# --- [0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
+echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
 TMP_OUI="${INSTALL_DIR}/oui.txt.tmp"
