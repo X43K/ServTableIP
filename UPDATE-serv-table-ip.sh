@@ -1,11 +1,13 @@
 #!/bin/bash
 # =============================================================
 #  Actualizador inteligente de ServTableIP (GitHub)
+#  - Actualiza base de datos oficial oui
 #  - Elimina versiones antiguas ServTableIP-*.py
 #  - Borra credservpas.xk si la versión < 9.0
 #  - Solo sobrescribe archivos modificados (hash distinto)
 #  - Hace ejecutables todos los *.sh nuevos (con sudo)
 #  - Aplica permisos 777 a todo el directorio ServTableIP
+#  - Auto-reinicio si UPDATE-serv-table-ip.sh cambia
 # =============================================================
 #  Autor: XaeK
 #  Fecha: 2025
@@ -21,7 +23,8 @@ ZIP_URL="${REPO_URL}/archive/refs/heads/main.zip"
 
 USER_NAME="${SUDO_USER:-$(logname 2>/dev/null || whoami)}"
 INSTALL_DIR="/home/${USER_NAME}/${APP_NAME}"
-SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
+SCRIPT_NAME="UPDATE-serv-table-ip.sh"
+SCRIPT_FILE="${INSTALL_DIR}/${SCRIPT_NAME}"
 TMP_UPDATE_DIR="$(mktemp -d)"
 COMMIT_FILE="${INSTALL_DIR}/.last_commit"
 
@@ -31,12 +34,12 @@ echo "=============================================="
 echo "Usuario detectado: $USER_NAME"
 echo "Repositorio: $REPO_URL"
 
-# --- [0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
-echo "[0] Comprobando si el listado OUI oficial ha cambiado..."
+# --- [0.0] Comprobar y actualizar oui.txt desde IEEE usando hash ---
+echo "[0.0] Comprobando si el listado OUI oficial ha cambiado..."
 OUI_URL="https://standards-oui.ieee.org/oui/oui.txt"
 OUI_FILE="${INSTALL_DIR}/oui.txt"
-
 TMP_OUI="${INSTALL_DIR}/oui.txt.tmp"
+
 if curl -s -o "$TMP_OUI" "$OUI_URL"; then
     remote_hash="$(sha256sum "$TMP_OUI" | awk '{print $1}')"
     local_hash="$(sha256sum "$OUI_FILE" 2>/dev/null | awk '{print $1}' || echo "")"
@@ -84,6 +87,20 @@ elif [ "$remote_commit" != "$local_commit" ]; then
     echo "[5] Aplicando permisos 777 a todo el directorio..."
     chmod -R 777 "$INSTALL_DIR"
 
+    # --- [6] Comprobar si el propio script ha cambiado ---
+    if [ -f "$UPDATE_SRC_DIR/$SCRIPT_NAME" ]; then
+        remote_script_hash="$(sha256sum "$UPDATE_SRC_DIR/$SCRIPT_NAME" | awk '{print $1}')"
+        local_script_hash="$(sha256sum "$SCRIPT_FILE" 2>/dev/null | awk '{print $1}' || echo "")"
+
+        if [ "$remote_script_hash" != "$local_script_hash" ]; then
+            echo "⚡ El propio script ha cambiado. Reiniciando con la nueva versión..."
+            cp "$UPDATE_SRC_DIR/$SCRIPT_NAME" "$SCRIPT_FILE"
+            chmod +x "$SCRIPT_FILE"
+            exec "$SCRIPT_FILE" "$@"  # Ejecuta la nueva versión
+            exit 0
+        fi
+    fi
+
     # Guardar commit actualizado
     echo "$remote_commit" > "$COMMIT_FILE"
     echo "✅ Actualización completada."
@@ -91,7 +108,7 @@ else
     echo "✅ Ya tienes la última versión de la aplicación instalada."
 fi
 
-# --- [6] Limpieza ---
+# --- [7] Limpieza ---
 rm -rf "$TMP_UPDATE_DIR"
 echo "=============================================="
 echo " Actualización finalizada."
