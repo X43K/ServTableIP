@@ -118,10 +118,10 @@ if [ "$NEEDS_RESTART" -eq 1 ]; then
     fi
 fi
 
-# --- [7] Mostrar LEEME2.md ---
-if [ -f "$INSTALL_DIR/LEEME2.md" ]; then
-    echo "📖 Contenido de LEEME2.md:"
-    cat "$INSTALL_DIR/LEEME2.md"
+# --- [7] Mostrar LEEME2.md solo si hubo actualización ---
+if [ "$NEEDS_RESTART" -eq 1 ] && [ -f "${INSTALL_DIR}/static/LEEME2.md" ]; then
+    echo
+    cat "${INSTALL_DIR}/static/LEEME2.md"
 fi
 
 # --- [8] Limpieza ---
@@ -129,9 +129,3 @@ rm -rf "$TMP_UPDATE_DIR"
 echo "=============================================="
 echo " Actualización finalizada."
 echo "=============================================="
-
-
-if [ -f "${INSTALL_DIR}/static/LEEME2.md" ]; then
-  echo
-  cat "${INSTALL_DIR}/static/LEEME2.md"
-fi
